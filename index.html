@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+      <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+      <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js'></script>
+  </head>
+  <body>
+    <h1>The Acme Guest Book</h1>
+    <div id="root"></div>
+    <script type="text/babel">
+    const { render } = ReactDOM;
+    const { Component } = React;
+    const root = document.querySelector('#root');
+
+    class App extends Component {
+      constructor() {
+        super();
+        this.state = {
+          guests: []
+        };
+      }
+
+      async componentDidMount() {
+        const guests = (await axios.get('/api/guests')).data;
+        this.setState({ guests });
+      }
+
+      render() {
+        const { guests } = this.state;
+        return(
+          <ul>
+            {
+              guests.map(guest => <li key={guest.id}>{guest.name}</li>)
+            }
+          </ul>
+        );
+      }
+    }
+
+    render(<App />, root);
+    </script>
+  </body>
+</html>

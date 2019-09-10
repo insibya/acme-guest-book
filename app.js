@@ -21,7 +21,8 @@ const readFile = (file) => {
 const server = http.createServer(async (req, res) => {
 	try {
 		if (req.url === '/') {
-			res.write('hello world');
+			const html = await readFile('./index.html');
+			res.write(html);
 			res.end();
 		} else if (req.url === '/api/guests') {
 			const guests = await readFileJSON('./guests.json');
