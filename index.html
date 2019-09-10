@@ -18,8 +18,15 @@
       constructor() {
         super();
         this.state = {
-          guests: []
+          guests: [],
+          user: ''
         };
+        this.onChange = this.onChange.bind(this);
+      }
+
+      onChange(ev) {
+        const user = ev.target.value;
+        this.setState({ user });
       }
 
       async componentDidMount() {
@@ -28,13 +35,23 @@
       }
 
       render() {
-        const { guests } = this.state;
+        const { guests, user } = this.state;
+        const { onChange } = this;
+        console.log(user);
         return(
-          <ul>
-            {
-              guests.map(guest => <li key={guest.id}>{guest.name}</li>)
-            }
-          </ul>
+          <div>
+            <form onSubmit={(ev) => ev.preventDefault()}>
+              <input name="guestName" value={ user } onChange={ onChange } />
+              <button>Sign In</button>
+            </form>
+            <div id='guestList'>
+              <ul>
+                {
+                  guests.map(guest => <li key={guest.id}>{guest.name}</li>)
+                }
+              </ul>
+            </div>
+          </div>
         );
       }
     }
